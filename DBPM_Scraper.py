@@ -16,9 +16,6 @@ for i in range(len(df)):
     if myPlayer.lower() not in DBPM:
         myPlayer = myPlayer.rsplit(' ', 1)[1] + ", " + myPlayer.rsplit(' ', 1)[0]
         DBPM[myPlayer] = df['DBPM'][i]
-
-for key, value in DBPM.items():
-    print(key, value)
     
 df = pd.read_csv('shot_logs_fgpct.csv')
 df['DBPM'] = df['CLOSEST_DEFENDER']

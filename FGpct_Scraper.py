@@ -1,17 +1,9 @@
 # -*- coding: utf-8 -*-
-import numpy as np
-import matplotlib.pyplot as plt
-import pandas as pd
-import nba_py as nba
-
-
-<<<<<<< HEAD
-=======
-@author: Sriram
+"""
+@author: Varun
 """
 import pandas as pd
 pd.options.mode.chained_assignment = None  # default='warn'
->>>>>>> 6d4979bd96ae881f084da2c6a5d083b8e254c0fd
 
 df = pd.read_csv('FGpct.csv')
 
@@ -22,7 +14,7 @@ for i in range(len(df)):
     if myPlayer.lower() not in FG_PCT:
         FG_PCT[myPlayer.lower()] = df['FG%'][i]
     
-df = pd.read_csv('shot_logs.csv')
+df = pd.read_csv('updated_shotlogs.csv')
 df['FG%'] = df['player_name']
 for i in range(len(df)):
     if df['player_name'][i] in FG_PCT:
