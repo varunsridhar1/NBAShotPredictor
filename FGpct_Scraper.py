@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Nov 11 17:52:32 2017
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import nba_py as nba
 
-@author: Sriram
-"""
+
 
