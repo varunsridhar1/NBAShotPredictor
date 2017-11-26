@@ -1,6 +1,6 @@
 import pandas as pd 
 import numpy as np
-data = pd.read_csv('./FINAL.csv',sep=',')
+data = pd.read_csv('./DUMMY_CODED.csv',sep=',')
 shot_clock = data['SHOT_CLOCK']
 game_clock = data['GAME_CLOCK']
 def get_sec(time_str):
@@ -25,6 +25,13 @@ for idx,n in enumerate(shot_clock):
             #data['SHOT_CLOCK'][idx] = (get_sec(game_clock[idx]))
             #print (shot_clock[idx],get_sec(game_clock[idx]))
 #data.to_csv('updated_shotlogs.csv')
+data['GAME_CLOCK'] = data['GAME_CLOCK'].apply(get_sec)
+#for idx, val in enumerate(game_clock):
+#   data['GAME_CLOCK'][idx] = (get_sec(game_clock[idx]))
+#   print(data['GAME_CLOCK'][idx])
+"""
 print("bad count", bad_count)
 print("total count", no_shotclock_count)
 print("data", data.shape)
+"""
+data.to_csv('DUMMY_CODED.csv', index=False)
