@@ -12,7 +12,7 @@ samples = pd.read_csv('./DUMMY_CODED.csv')
 
 X_train, X_test, y_train, y_test = train_test_split(samples[['SHOT_NUMBER','GAME_CLOCK','SHOT_CLOCK','TOUCH_TIME','SHOT_DIST','CLOSE_DEF_DIST','FG%','DBPM','DAYS_SINCE_START','H','1','2','3','4','5','6']],samples['FGM'],test_size = 0.25, random_state=10)
 
-def func_auc(ground_truth, predictions):
+def corr_class(ground_truth, predictions):
     mat=confusion_matrix(ground_truth,predictions)
     return (mat[0][0]+mat[1][1]*1.0)/np.sum(mat)
 
@@ -20,7 +20,7 @@ logReg2=LogisticRegression(penalty='l2')
 cs=[0.01, 0.1, 1, 10 ,100]
 tuned_parameters = [{'C': cs}]
 n_folds = 3
-scorerFunc=make_scorer(func_auc)
+scorerFunc=make_scorer(corr_class)
 
 gridL = GridSearchCV(logReg2, tuned_parameters, cv=n_folds, refit=False, scoring = scorerFunc)
 gridL.fit(X_train, y_train)
