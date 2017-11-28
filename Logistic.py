@@ -11,9 +11,12 @@ from sklearn.metrics import roc_curve
 from sklearn.metrics import roc_auc_score
 
 #---------------------------------------------------
-samples = pd.read_csv('./DUMMY_CODED.csv')
+print("Logistic regression:")
 
-X_train, X_test, y_train, y_test = train_test_split(samples[['SHOT_NUMBER','GAME_CLOCK','SHOT_CLOCK','TOUCH_TIME','SHOT_DIST','CLOSE_DEF_DIST','FG%','DBPM','DAYS_SINCE_START','H','1','2','3','4','5','6']],samples['FGM'],test_size = 0.25, random_state=10)
+samples = pd.read_csv('FINAL.csv')
+features = ['LOCATION','SHOT_NUMBER','GAME_CLOCK','SHOT_CLOCK','TOUCH_TIME','SHOT_DIST','CLOSE_DEF_DIST','FG%','DBPM','DAYS_SINCE_START','1','2','3','4','5','6']
+
+X_train, X_test, y_train, y_test = train_test_split(samples[['LOCATION','SHOT_NUMBER','GAME_CLOCK','SHOT_CLOCK','TOUCH_TIME','SHOT_DIST','CLOSE_DEF_DIST','FG%','DBPM','DAYS_SINCE_START','1','2','3','4','5','6']],samples['FGM'],test_size = 0.25, random_state=10)
 
 def corr_class(ground_truth, predictions):
     mat=confusion_matrix(ground_truth,predictions)
@@ -28,6 +31,7 @@ scorerFunc=make_scorer(corr_class)
 gridL = GridSearchCV(logReg2, tuned_parameters, cv=n_folds, refit=True, scoring = scorerFunc)
 gridL.fit(X_train, y_train)
 
+<<<<<<< HEAD
 fpr, tpr, thresholds = roc_curve(gridL.predict(X_test), y_test)
 auc = roc_auc_score(gridL.predict(X_test), y_test)
 
@@ -51,3 +55,27 @@ print("Test True Positive Rate: ", corr_class(y_test, gridL.predict(X_test)))
 #print("Average Per Class Accuracy for each C")
 #print(scoresGrid)
 #print("\nBest C value: "+ str(cs[np.argmax(scoresGrid)]) + ", Average Per Class Accuracy: "+ str(scoresGrid[np.argmax(scoresGrid)]))
+=======
+scoresGrid=gridL.cv_results_['mean_test_score']
+print("(all shots) Average Per Class Accuracy for each C")
+print(scoresGrid)
+print("\nBest C value: "+ str(cs[np.argmax(scoresGrid)]) + ", Average Per Class Accuracy: "+ str(scoresGrid[np.argmax(scoresGrid)]) + "\n")
+
+twoptsamples = samples[samples['PTS_TYPE'] == 0]
+X_train2, X_test2, y_train2, y_test2 = train_test_split(twoptsamples[['LOCATION','SHOT_NUMBER','GAME_CLOCK','SHOT_CLOCK','TOUCH_TIME','SHOT_DIST','CLOSE_DEF_DIST','FG%','DBPM','DAYS_SINCE_START','1','2','3','4','5','6']],twoptsamples['FGM'],test_size = 0.25, random_state=10)
+gridL.fit(X_train2, y_train2)
+
+scoresGrid=gridL.cv_results_['mean_test_score']
+print("(2 pt shots) Average Per Class Accuracy for each C")
+print(scoresGrid)
+print("\nBest C value: "+ str(cs[np.argmax(scoresGrid)]) + ", Average Per Class Accuracy: "+ str(scoresGrid[np.argmax(scoresGrid)]) + "\n")
+
+threeptsamples = samples[samples['PTS_TYPE'] == 1]
+X_train3, X_test3, y_train3, y_test3 = train_test_split(threeptsamples[['LOCATION','SHOT_NUMBER','GAME_CLOCK','SHOT_CLOCK','TOUCH_TIME','SHOT_DIST','CLOSE_DEF_DIST','FG%','DBPM','DAYS_SINCE_START','1','2','3','4','5','6']],threeptsamples['FGM'],test_size = 0.25, random_state=10)
+gridL.fit(X_train3, y_train3)
+
+scoresGrid=gridL.cv_results_['mean_test_score']
+print("(3 pt shots) Average Per Class Accuracy for each C")
+print(scoresGrid)
+print("\nBest C value: "+ str(cs[np.argmax(scoresGrid)]) + ", Average Per Class Accuracy: "+ str(scoresGrid[np.argmax(scoresGrid)]) + "\n")
+>>>>>>> b3b0a90440256f8bafed26f5ac8a06ed4536a112
