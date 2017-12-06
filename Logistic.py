@@ -31,7 +31,6 @@ scorerFunc=make_scorer(corr_class)
 gridL = GridSearchCV(logReg2, tuned_parameters, cv=n_folds, refit=True, scoring = scorerFunc)
 gridL.fit(X_train, y_train)
 
-<<<<<<< HEAD
 fpr, tpr, thresholds = roc_curve(gridL.predict(X_test), y_test)
 auc = roc_auc_score(gridL.predict(X_test), y_test)
 
@@ -55,7 +54,7 @@ print("Test True Positive Rate: ", corr_class(y_test, gridL.predict(X_test)))
 #print("Average Per Class Accuracy for each C")
 #print(scoresGrid)
 #print("\nBest C value: "+ str(cs[np.argmax(scoresGrid)]) + ", Average Per Class Accuracy: "+ str(scoresGrid[np.argmax(scoresGrid)]))
-=======
+
 scoresGrid=gridL.cv_results_['mean_test_score']
 print("(all shots) Average Per Class Accuracy for each C")
 print(scoresGrid)
@@ -78,4 +77,4 @@ scoresGrid=gridL.cv_results_['mean_test_score']
 print("(3 pt shots) Average Per Class Accuracy for each C")
 print(scoresGrid)
 print("\nBest C value: "+ str(cs[np.argmax(scoresGrid)]) + ", Average Per Class Accuracy: "+ str(scoresGrid[np.argmax(scoresGrid)]) + "\n")
->>>>>>> b3b0a90440256f8bafed26f5ac8a06ed4536a112
+

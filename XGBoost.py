@@ -11,6 +11,9 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from sklearn.model_selection import KFold
 from sklearn.model_selection import cross_val_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import roc_curve
+from sklearn.metrics import roc_auc_score
 
 print("XGBoost:")
 
@@ -34,14 +37,37 @@ print("Feature ranking:")
 for f in range(X_train.shape[1]):
     print("%d. %s (%f)" % (f + 1, features[indices[f]], importances[indices[f]]))
 
+def corr_class(ground_truth, predictions):
+    mat=confusion_matrix(ground_truth,predictions)
+    return (mat[0][0]+mat[1][1]*1.0)/np.sum(mat)
+
 # Plot the feature importances of the forest
 plt.figure()
 plt.title("Feature importances")
 plt.bar(range(X_train.shape[1]), importances[indices],
        color="r", align="center")
-plt.xticks(range(X_train.shape[1]), indices)
+plt.xticks(range(X_train.shape[1]))
 plt.xlim([-1, X_train.shape[1]])
 plt.show()
+
+fpr, tpr, thresholds = roc_curve(model0.predict(X_test), y_test)
+auc = roc_auc_score(model0.predict(X_test), y_test)
+
+plt.figure()
+lw = 2
+plt.plot(fpr, tpr, color='darkorange',
+         lw=lw, label='ROC curve (area = %0.2f)' % auc)
+plt.plot([0, 1], [0, 1], color='navy', lw=lw, linestyle='--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('XGBoost ROC')
+plt.legend(loc="lower right")
+# This is the ROC curve
+plt.show() 
+
+print("Test True Positive Rate: ", corr_class(y_test, model0.predict(X_test)))
 
 
 
